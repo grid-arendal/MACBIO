@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Kiribati Marine Atlas</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css">
+    <link rel="stylesheet" href="assets/css/styledLayerControl.css">
+     <link rel="stylesheet" href="assets/css/app.css">
+  
+
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="assets/img/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="navigation" style="background-color:rgb(255,196,50)">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-icon-container">
+            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+           </div>
+          <a class="navbar-brand" href="#">Kiribati Marine Atlas</a>
+        </div>
+        <div class="navbar-collapse collapse" id="navcol">
+          <ul class="nav navbar-nav">
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>			
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="download-btn"><i class="fa fa-arrow-circle-down white"></i>&nbsp;&nbsp;Download</a></li>	
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="metadata-btn"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Metadata</a></li>	
+            <!-- <li class="dropdown">
+              <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Tools <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn"><i class="fa fa-arrows-alt"></i>&nbsp;&nbsp;Zoom To Full Extent</a></li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn"><i class="fa fa-picture-o"></i>&nbsp;&nbsp;Show Legend</a></li>
+
+                <!-- <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="login-btn"><i class="fa fa-user"></i>&nbsp;&nbsp;Login</a></li>
+              </ul>
+            </li> -->
+
+            <!-- <li class="dropdown">
+                <a class="dropdown-toggle" id="downloadDrop" href="#" role="button" data-toggle="dropdown"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="data/boroughs.geojson" download="boroughs.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Boroughs</a></li>
+                  <li><a href="data/subways.geojson" download="subways.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Subway Lines</a></li>
+                  <li><a href="data/DOITT_THEATER_01_13SEPT2010.geojson" download="theaters.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Theaters</a></li>
+                  <li><a href="data/DOITT_MUSEUM_01_13SEPT2010.geojson" download="museums.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Museums</a></li>
+                </ul>
+            </li> -->
+          </ul>
+          <div  class="col-md-3 pull-right container-fluid">          
+              
+            <form class="btn btn-block form-inline">
+                <label style="color: white;padding-right: 5px">Get Layer Info</label>
+                  <select class="form-control" id="lgList" style="max-width: 200px;"> 
+                      <option hidden selected>--Select a Layer--</option>                 
+                  </select>
+            </form>
+         
+          </div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div id="container">
+      
+      <div id="map"></div>
+    </div>
+    <div id="loading">
+      <div class="loading-indicator">
+        <div class="progress progress-striped active">
+          <div class="progress-bar progress-bar-info progress-bar-full"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Welcome to the MACBIO KIRIBATI Atlas interactive data viewer</h4>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs nav-justified" id="aboutTabs">
+              <li class="active"><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About the project</a></li>
+              <!-- <li><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Contact us</a></li> -->
+              <li><a href="#download" data-toggle="tab"><i class="fa fa-arrow-circle-down"></i>&nbsp;Download</a></li>
+               <li><a href="#metadata" data-toggle="tab"><i class="fa fa-globe"></i>&nbsp;Metadata</a></li>
+              
+              <!-- <li class="dropdown">
+                <a href="#"  data-toggle="tab"><i class="fa fa-globe"></i>&nbsp;Metadata <b class="caret"></b></a>
+                <!-- <ul class="dropdown-menu">
+                  <li><a href="#boroughs-tab" data-toggle="tab">data1</a></li>
+                  <li><a href="#subway-lines-tab" data-toggle="tab">data2</a></li>
+                  <li><a href="#theaters-tab" data-toggle="tab">data3</a></li>
+                  <li><a href="#museums-tab" data-toggle="tab">data4</a></li>
+                </ul> 
+              </li>-->
+            </ul>
+            <div class="tab-content" id="aboutTabsContent">
+              <div class="tab-pane fade active in" id="about">
+              
+                <p class="text-justify font-weight-normal">The people of Kiribati depend on marine and coastal ecosystems to support their livelihoods and wellbeing. Kiribati has 811 km2 of land area in three separate island groups spread across the central Pacific Ocean; they comprise an exclusive economic zone (EEZ) of nearly 3.5 million km2.<br/><br/>
+
+                  The Marine Atlas for Kiribati compiles over a hundred datasets from countless data providers and for the first time makes marine and coastal information accessible and usable as data layers and as raw data.<br/><br/>
+                  Using the Atlas as a support tool, decision makers from all sectors can appreciate the value of marine ecosystems and the importance of spatial planning in managing these ecosystems. Practitioners can assist these planning processes using the accompanying data layers and raw data in their geographic information systems (GIS).<br/><br/>
+                  
+                  While the Atlas provides the best data publicly available today, the information about Fiji’s waters is forever growing and changing. In this way the Atlas, should become a living resource updated as needed and required. <br/><br/>
+                  
+                  The Kiribati Marine Atlas was prepared by the Marine and Coastal Biodiversity Management in Pacific Island Countries <strong>(MACBIO)</strong> project. <br/><br/>
+                  
+                  Funded by the German Federal Ministry for the Environment, Nature Conservation and Nuclear Safety (BMU) for a period of five years through the International Climate Initiative (IKI), the Marine and Coastal Biodiversity Management in Pacific Island Countries (MACBIO) project aims to strengthen the sustainable management of marine and coastal biodiversity by supporting economic ecosystem assessments, marine spatial planning and consultations in regard to marine protected areas (MPAs). MACBIO is being implemented in five Pacific Island countries with the support of the German Agency for International Cooperation (GIZ) in close collaboration with the Secretariat of the Pacific Regional Environment Programme (SPREP) and with technical support from the International Union for Conservation of Nature (IUCN). <br/><br/>
+                  
+                  The online interactive atlas is complimented by both a hard copy and e-atlas.  Please see <a href="http://macbio-pacific.info/" target="_blank">www.macbio-pacific.info</a> 
+                   
+                  </p>
+<div class="text-center">
+  <img src="./assets/img/logo.jpg" class="img-responsive" alt="logo">
+</div>      
+             </div>
+              <div id="download" class="tab-pane fade">
+              <p><b>Base Layers</b><br>
+                    
+<a href="http://www.marineregions.org">Exclusive Economic Zone</a><br>
+
+<a href="http://www.naturalearthdata.com">Populated Places</a><br>
+
+<br>
+
+<b>VALUING</b><br>
+
+<a href="http://www.gebco.net"  target="_blank">Ocean Depth</a><br>
+
+<a href="http://www.bluehabitats.org/"  target="_blank">Geomorphology : Basins, Canyons, Escarpments, Guyots, Seamounts, Rift Valleys, Troughs, Ridges, Spreading Ridges, Trenches, Plateaus, Shelf, Slope, Abyssal</a><br>
+
+<a href="http://www.gebco.net/"  target="_blank">Seamount Morphology</a><br>
+<a href="http://volcano.si.edu/gvp_votw.cfm"  target="_blank">Inactive Volcanoes</a><br>
+<a href="http://earthquake.usgs.gov/earthquakes/search"  target="_blank">Earthquake Centers 2000-2016</a><br>
+<a href="http://vents-data.interridge.org"  target="_blank">Hydrothermal vents</a><br>
+<a href="http://podaac.jpl.nasa.gov/dataset/OSCAR_L4_OC_third-deg" target="_blank">Surface Currents</a><br>
+<a href="http://www.bio-oracle.org/" target="_blank">Salinity</a><br>
+<a href="https://modis.gsfc.nasa.gov/data/dataprod/index.php" target="_blank">Chlorophyll-a Concentration</a><br>
+<a href="https://modis.gsfc.nasa.gov/data/dataprod/index.php" target="_blank">Photosynthetically Available Radiation</a><br>
+<a href="http://data.unep-wcmc.org" target="_blank">Reefs</a><br>
+<a href="http://www.aquamaps.org" target="_blank">Marine Species Richness</a><br>
+<a href="http://82.116.78.168/layers/geonode:coldwater" target="_blank">Cold Water Coral Habitats </a><br>
+<a href="http://www.cbd.int/ebsa/resources" target="_blank">Key biodiversity and ecologically and biologically significant areas</a><br>
+<a href="http://82.116.78.168/layers/geonode:deepwater_2" target="_blank">Deepwater Bioregions </a><br>
+<a href="http://82.116.78.168/layers/geonode:reefbio_1" target="_blank">Reef Associated Bioregions </a><br>
+
+<br>
+
+<b>PLANNING</b><br>
+
+<a href="https://www.wcpfc.int/" target="_blank">Tuna Catch </a><br>
+<a href="https://www.seaaroundus.org" target="_blank">Deep Water Fisheries Catch</a><br>
+<a href="http://sedac.ciesin.columbia.edu" target="_blank">Population Density</a><br>
+<a href="http://82.116.78.168/layers/geonode:aquaculture" target="_blank">Aquaculture</a><br>
+<a href="http://www.wri.org/publication/reefs-risk-revisited" target="_blank">Tourism : Anchorages, Passenger Vessel, Airports, Wharves and Jetties, Cruise ship Landings</a><br>
+<a href="http://www.cablemap.info/" target="_blank">Submarine Cables </a><br>
+<a href="http://82.116.78.168/layers/geonode:ports" target="_blank">Ports </a><br>
+<a href="http://82.116.78.168/layers/geonode:kirvessel" target="_blank">Vessels Traffic </a><br>
+<a href="http://www.bio-oracle.org" target="_blank">Phosphate and Nitrate Concentration </a><br>
+<a href="ftp://podaac.jpl.nasa.gov/allData/modis/docs/modis_sst.gd.html" target="_blank">Mean Sea Surface Temperature </a><br>
+<a href="http://www.bio-oracle.org/" target="_blank">pH, Calcite Concentration </a><br>
+<a href="http://82.116.78.168/layers/geonode:cyclones" target="_blank">Cyclones </a><br>
+
+
+<br>
+
+<b>MANAGING</b><br>
+<a href="www.protectedplanet.net" target="_blank">Marine Management </a><br>
+<a href="https://gisis.imo.org/Public/Default.aspx" target="_blank">IMO MARPOL Convention </a><br>
+
+</p>
+           </div>
+
+
+              <div class="tab-pane fade" id="contact">
+                <p>...</p>
+              </div>
+              <div class="tab-pane fade" id="metadata">
+
+                  <p><b>Base Layers</b><br>
+                    <b>Exclusive Economic Zone, Archipelagic Baseline</b><br>
+Claus S., N. De Hauwere, B. Vanhoorne, F. Souza Dias, P. Oset García, F. Hernandez, and J. Mees (Flanders Marine Institute) (2016).  Accessed at http://www.marineregions.org on 2016-10-21.<br>
+
+
+<b>Populated Places</b><br>
+
+Natural Earth. (2017). “Populated Places.” Accessed at: www.naturalearthdata.com.<br>
+<br>
+
+<b>VALUING</b><br>
+
+<b>Ocean Depth</b><br>
+
+IHO-IOC GEBCO. (2017). “Gazetteer of Undersea Feature Names”. Accessed at www.gebco.net.<br>
+
+<b>Basins, Canyons, Escarpments, Guyots, Seamounts, Rift Valleys, Troughs, Ridges, Spreading Ridges, Trenches, Plateaus, Shelf, Slope, Abyssal</b> <br>
+
+Harris, P.T., Macmillan-Lawler, M., Rupp, J. and Baker, E.K. (2014). Geomorphology of the oceans. Marine Geology, 352: 4-24.<br>
+
+<b>Seamount Morphology</b><br>
+
+Macmillan-Lawler, M. and Harris, P.T. (2016) Chapter 17: Multivariate Classification of Seamount Morphology: Assessing Seamount Morphotypes in Relation to Marine Jurisdictions and Bioregions 
+in Ocean Solutions – Earth Solutions, Editor Wright, D.J. ESRI Press.<br>
+
+IHO-IOC GEBCO. (2017). “Gazetteer of Undersea Feature Names”. Accessed at www.gebco.net.<br>
+
+<b>Inactive Volcanoes</b><br>
+Global Volcanism Program. (2013). Volcanoes of the World, v. 4.5.3. Venzke, E (ed.). Smithsonian Institution. Accessed at http://dx.doi.org/10.5479/si.GVP.VOTW4-2013.<br>
+<b>Earthquake Centers 2000-2016</b><br>
+
+Earthquake Hazards Program. (2017). Earthquake epicenters 1980-2016. U.S. Geological Survey. Accessed at http://earthquake.usgs.gov/earthquakes/search/ on 14 Feb 2017.
+IHO-IOC GEBCO. (2017). “Gazetteer of Undersea Feature Names”. Accessed at www.gebco.net.<br>
+
+<b>Hydrothermal vents</b><br>
+Beaulieu, S.E. (2015). InterRidge Global Database of Active Submarine Hydrothermal Vent Fields: prepared for InterRidge, Version 3.3. World Wide Web electronic publication. Version 3.4. Accessed at http://vents-data.interridge.org on 2017-01-13.<br>
+
+
+<b>Surface Currents</b> <br>
+
+ESR. (2009). OSCAR third degree resolution ocean surface currents. Ver. 1. PO. DAAC, CA, USA. Accessed [2017-01-13] at http://dx.doi.org/10.5067/OSCAR-03D01 on 2017-01-13.<br>
+
+<b>Salinity</b> <br>
+Tyberghein L., Verbruggen H., Pauly K., Troupin C., Mineur F. & De Clerck O. (2012). “Bio-ORACLE: a global environmental dataset for marine species distribution modeling.” Global Ecology and Biogeography. <br>
+
+
+<b>Chlorophyll-a Concentration</b><br>
+Tyberghein L., Verbruggen H., Pauly K., Troupin C., Mineur F. & De Clerck O. (2012). “Bio-ORACLE: a global environmental dataset for marine species distribution modeling.” Global Ecology and Biogeography. <br>
+
+
+<b>Photosynthetically Available Radiation</b> <br>
+
+NASA Goddard Space Flight Center, Ocean Ecology Laboratory, Ocean Biology Processing Group. (2014). “Moderate-resolution Imaging Spectroradiometer (MODIS) Aqua Photosynthetically Available Radiation Data” NASA OB.DAAC.<br>
+
+<b>Reefs</b><br>
+
+Andréfouët, S., F. E. Muller-Karger, J. A. Robinson, C. J. Kranenburg, D. Torres-Pulliza, S. A. Spraggins, and B. Murch. (2005). “Global assessment of modern coral reef extent and diversity for regional science and management applications: a view from space.” 10th International Coral Reef Symposium. Japanese Coral Reef Society, Okinawa, Japan. <br>
+
+<b>Mangroves</b><br>
+
+Spalding M.D., Blasco F. and Field C.D. (1997). “World Mangrove Atlas”. Okinawa (Japan): International Society for Mangrove Ecosystems. 178 pp. Compiled by UNEP-WCMC, in collaboration with the International Society for Mangrove Ecosystems (ISME). (version 3). <br>
+
+<b>Pelagic and Marine Species Richness</b><br>
+
+Kaschner, K., K. Kesner-Reyes, C. Garilao, J. Rius-Barile, T. Rees, and R. Froese. (2016). “AquaMaps: Predicted range maps for aquatic species.” version 08/2016. Accessed at www.aquamaps.org.<br>
+
+<b>Cold Water Habitat Suitability</b> <br>
+
+Yesson, C., Taylor, M. L., Tittensor, D. P., Davies, A. J., Guinotte, J., Baco, A., Black, J., Hall-Spencer, J. M. and Rogers, A. D. (2012). “Global habitat suitability of cold-water octocorals.” Journal of Biogeography, 39: 1278–1292. <br>
+
+<b>Key Bird and Biodiversity Areas, Ecologically and Biologically Significant Areas</b><br>
+
+The Convention on Biological Diversity. (2016). “Ecologically or Biologically Significant Marine Areas.” <br>
+
+<b>Special and Unique Marine Areas</b><br>
+
+Sykes H., LeGrand J., Davey K., Fernandes L.,  Mangubhai S., Yakub N., Wendt H., Kirmani S., Gauna M. (in prep) “Special, unique marine areas of Fiji.” GIZ, IUCN, SPREP: Suva.<br>
+
+<b>Deepwater and Reef Associated Bioregions</b> <br>
+
+Wendt H., Beger M., Sullivan J., LeGrand J., Davey K., Yakub N., Fernandes L. (in prep) “Draft preliminary marine bioregions of the Southwest Pacific.” GIZ, IUCN, SPREP: Suva.<br>
+<br>
+
+<b>PLANNING</b><br>
+
+<b>Tuna Catch</b><br>
+
+Pauly D. and Zeller D. (2016). “Sea Around Us Concepts, Design and Data”. Accessed at www.seaaroundus.org<br>
+
+Williams, P. (2016). “Tuna Fishery Yearbook 2015.” Western and Central Pacific Fisheries Commission. Accessed at: https://www.wcpfc.int/system/files/YB_2015.pdf on 13 Jan. 2017<br>
+
+<b>Deep Water Fisheries Catch</b><br>
+
+Pauly D. and Zeller D. (2016). “Sea Around Us Concepts, Design and Data”. Accessed at www.seaaroundus.org<br>
+
+
+<b>Fish Markets</b><br>
+Center for International Earth Science Information Network - CIESIN - Columbia University. (2017). “Gridded Population of the World, Version 4 (GPWv4): Population Density Adjusted to Match 2015 Revision UN WPP Country Totals, Revision 10.” Accessed at: http://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-density-adjusted-to-2015-unwpp-country-totals-rev10<br>
+
+Fisheries Department Fiji (2014). “Annual Report of the Fisheries Department.” p.33 Suva, Fiji.<br>
+
+<b>Fish Aggregating Devices</b><br>
+
+Center for International Earth Science Information Network - CIESIN - Columbia University. (2017). “Gridded Population of the World, Version 4 (GPWv4): Population Density Adjusted to Match 2015 Revision UN WPP Country Totals, Revision 10.” Accessed at: http://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-density-adjusted-to-2015-unwpp-country-totals-rev10<br>
+
+Fisheries Department Fiji (2014). “Annual Report of the Fisheries Department.” p.33 Suva, Fiji.<br>
+
+<b>Marine and Freshwater Aquaculture Sites</b><br>
+
+Fisheries Department Fiji. (2014). “Aquaculture Farmer Master List.” Suva, Fiji.<br>
+
+<b>Hotels with Marine Activities</b><br>
+
+Burke, L., Reytar, K., Spalding, M. and Perry, A. (2011). “Reefs at Risk Revisited.” World Resources Institute. Accessed at: http://www.wri.org/publication/reefs-risk-revisited<br>
+
+Fiji Airways, Fiji Airways Destinations, Accessed at: https://www.fijiairways.com/media/746689/routemap07aug15.pdf.<br>
+
+<b>Deep Sea Mining And Underwater Cabling</b><br> 
+
+Gràcia, E., Ondréas, H., Bendel, V., STARMER Group. (1994). “Multiscale morphologic variability of the North Fiji Basin ridge (Southwest Pacific).” Marine Geology. 116, pp. 133–151.<br>
+
+Mahlknecht, G. (2016). “Greg's Cable Map.” Accessed at: http://www.cablemap.info/.<br>
+
+<b>Vessel Traffic</b><br>
+
+Secretariat of the Pacific Regional Environment Programme (SPREP). (2013 - 2014). “Exact AIS vessel tracks.” <br>
+
+<b>Phosphate and Nitrate Concentration</b> <br>
+
+Tyberghein L., Verbruggen H., Pauly K., Troupin C., Mineur F. & De Clerck O. (2012). “Bio-ORACLE: a global environmental dataset for marine species distribution modeling.” Global Ecology and Biogeography. <br>
+
+<b>Pollution on reef units and Water-shed based pollution</b><br>
+
+Klein, C. J., Jupiter, S. D., Selig, E. R., Watts, M. E., Halpern, B. S., Kamal, M. , Roelfsema, C. and Possingham, H. P. (2012). “Forest conservation delivers highly variable coral reef conservation outcomes.” Ecological Applications, 22: 1246-1256. <br>
+
+<b>Mean Sea Surface Temperature</b><br>
+
+
+NASA Goddard Space Flight Center, Ocean Ecology Laboratory, Ocean Biology Processing Group. (2014). “Moderate-resolution Imaging Spectroradiometer (MODIS) Aqua Sea Surface Temperature Data.” NASA PO.DAAC. Accessed on 01/13/2017.
+
+<b> pH</b><br>
+
+Tyberghein L., Verbruggen H., Pauly K., Troupin C., Mineur F. & De Clerck O. (2012). “Bio-ORACLE: a global environmental dataset for marine species distribution modeling.” Global Ecology and Biogeography. <br>
+
+<b> Calcite Concentration</b><br>
+
+Tyberghein L., Verbruggen H., Pauly K., Troupin C., Mineur F. & De Clerck O. (2012). “Bio-ORACLE: a global environmental dataset for marine species distribution modeling.” Global Ecology and Biogeography. <br>
+
+<b> Reef Risk Level</b><br>
+
+Burke, L., Reytar, K., Spalding, M. and Perry, A. (2011). “Reefs at Risk Revisited.” World Resources Institute. Accessed at: http://www.wri.org/publication/reefs-risk-revisited<br>
+
+<b> Cyclones</b><br>
+
+Knapp, K. R., M. C. Kruk, D. H. Levinson, H. J. Diamond, and C. J. Neumann. (2010). “The International Best Track Archive for Climate Stewardship (IBTrACS): Unifying tropical cyclone best track data.” Bulletin of the American Meteorological Society, 91, 363-376.<br>
+Weather Underground. (2017). “Tropical Cyclone Winston: 3/10/2016 - 3/24/2016.” Accessed at: https://www.wunderground.com/hurricane/south-pacific/2016/tropical-cyclone-Winston.<br>
+<br>
+<b>MANAGING</b><br>
+
+<b>Marine Management</b><br>
+
+IUCN and UNEP-WCMC. (2016). “The World Database on Protected Areas (WDPA).” Accessed at: www.protectedplanet.net.  
+Locally Managed Marine Areas. (2016). “Fiji Locally Managed Marine Area Network.” <br>
+
+
+<b>IMO MARPOL Convention</b><br>
+
+International Maritime Organization. (2011). “MARPOL Consolidated edition 2011: articles, protocols, annexes and unified interpretations of the International Convention for the Prevention of Pollution from Ships, 1973, as modified by the 1978 and 1997 protocols”. <br>
+A Marine Layer Cake<br>
+
+</p>
+                </div>
+
+              <div class="tab-pane fade" id="boroughs-tab">
+                <p>Borough data courtesy of <a href="http://www.nyc.gov/html/dcp/pdf/bytes/nybbwi_metadata.pdf" target="_blank">New York City Department of City Planning</a></p>
+              </div>
+              <div class="tab-pane fade" id="subway-lines-tab">
+                <p><a href="http://spatialityblog.com/2010/07/08/mta-gis-data-update/#datalinks" target="_blank">MTA Subway data</a> courtesy of the <a href="http://www.urbanresearch.org/about/cur-components/cuny-mapping-service" target="_blank">CUNY Mapping Service at the Center for Urban Research</a></p>
+              </div>
+              <div class="tab-pane fade" id="theaters-tab">
+                <p>Theater data courtesy of <a href="https://data.cityofnewyork.us/Recreation/Theaters/kdu2-865w" target="_blank">NYC Department of Information & Telecommunications (DoITT)</a></p>
+              </div>
+              <div class="tab-pane fade" id="museums-tab">
+                <p>Museum data courtesy of <a href="https://data.cityofnewyork.us/Recreation/Museums-and-Galleries/sat5-adpb" target="_blank">NYC Department of Information & Telecommunications (DoITT)</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="legendModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Legend</h4>
+          </div>
+          <div class="modal-body">
+            <p>...</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Login</h4>
+          </div>
+          <div class="modal-body">
+            <form id="contact-form">
+              <fieldset>
+                <div class="form-group">
+                  <label for="name">Username:</label>
+                  <input type="text" class="form-control" id="username">
+                </div>
+                <div class="form-group">
+                  <label for="email">Password:</label>
+                  <input type="password" class="form-control" id="password">
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal">Login</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-primary" id="feature-title"></h4>
+          </div>
+          <div class="modal-body" id="feature-info"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="attributionModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+              <!-- Developed by <a href='http://bryanmcbride.com'>bryanmcbride.com</a> -->
+              Attributions
+            </h4>
+          </div>
+          <div class="modal-body">
+           
+            <!-- <div id="attribution"></div> -->
+          
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>       
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.5/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>    
+   	<script src="assets/js/styledLayerControl.js"></script>
+	<script src="assets/js/easyPrint.js"> </script>
+   	<script src="assets/js/app.js"></script>
+    <script src="assets/js/app_getinfo.js"></script>
+   
+  </body>
+</html>
