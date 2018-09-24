@@ -9,7 +9,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost/fiji/index.html",
+            "url": "http://localhost/MACBIO_Template/fiji/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]

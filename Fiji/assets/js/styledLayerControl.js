@@ -168,6 +168,43 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
         this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
         this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
 
+        
+       // add layer clear functionality
+        var btn = L.DomUtil.create('BUTTON');
+        btn.setAttribute('class', 'btn');
+        btn.setAttribute('id', 'btn_clr');
+        btn.innerHTML = 'Clear All Layer';
+        btn.style.width = "75px";
+        btn.style.height = "20px";
+        btn.style.fontSize = "smaller";
+        btn.style.textAlign="center";
+        btn.style.padding="0px";
+        btn.onclick = function(){
+            
+            map.eachLayer(function (layer) {
+                
+                if(layer.options.zIndex > 2)
+                {
+                map.removeLayer(layer);
+                layer.setOpacity(1);
+            }
+            
+            })
+            setLayerTransparency();
+            return false;
+          };
+
+//add loaing image
+var loadLay = L.DomUtil.create('IMG');
+loadLay.src='./assets/img/loadLay.gif';
+loadLay.style.paddingLeft="10px";
+loadLay.setAttribute('id', 'gif_loadLay');
+
+
+       
+            
+        container.appendChild(btn);
+        container.appendChild(loadLay);     
         container.appendChild(section);
 
         // process options of ac-container css class - to options.container_width and options.container_maxHeight
@@ -327,11 +364,10 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
 
         var name = document.createElement('span');
         name.innerHTML = ' ' + obj.name;
+    
+var layList = "fiji_provisional_exclusive_economic_zone_boundary,density,fijivessels,coldwater,archipelagicbaseline,fishmarkets,fishaggr,basins,salinity,divisional_lines,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,salinity_clip,fiji_reefs,fiji_mangrove,pelagic,benthic,ebsaregions_20150521,ibamap_12feb2016_selected,fiji_suma_inshore,fiji_suma_offshore,fijibioregionsprojected,reefbioregions,fiji_decade_of_tuna,marine_aquaculture_sites,freshwater_aquaculture_sites,hotels_with_marine_activities,dive_sites,passengervessel,airport,jetties_ports_marinas_anchorages_portofcall,live_aboard_areas,_2016_cruiseship_schedule_1,cables_360,deep_sea_mineral_exploration_wgs84,oil_exploration_licenses_and_applications_wgs84,ports,pollutionreef,pollutionwater,imomarpol,cyclones,fiji_decade_of_deepfish,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph";
+var excludeList="OpenStreetMap,WorldImagery ESRI" ;
 
-
- //required layer list
- var layList = "fiji_provisional_exclusive_economic_zone_boundary,density,fijivessels,coldwater,archipelagicbaseline,fishmarkets,fishaggr,basins,salinity,divisional_lines,populated_places,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,currents,salinity_clip,fiji_reefs,fiji_mangrove,pelagic,benthic,ebsaregions_20150521,ibamap_12feb2016_selected,fiji_suma_inshore,fiji_suma_offshore,fijibioregionsprojected,reefbioregions,fiji_decade_of_tuna,marine_aquaculture_sites,freshwater_aquaculture_sites,hotels_with_marine_activities,dive_sites,passengervessel,airport,jetties_ports_marinas_anchorages_portofcall,live_aboard_areas,_2016_cruiseship_schedule_1,cables_360,deep_sea_mineral_exploration_wgs84,oil_exploration_licenses_and_applications_wgs84,ports,pollutionreef,pollutionwater,imomarpol,cyclones,fiji_decade_of_deepfish,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph";
- var excludeList="OpenStreetMap,WorldImagery ESRI" ;
  excludeList = excludeList.split(",");
  layList = layList.split(",");
 
@@ -341,11 +377,23 @@ if(excludeList.indexOf(obj.name) < 0)
  {
    if(layList.indexOf(obj.layer.options.layers.split(":")[1]) > -1)
    {
+   
+    //var sliLayer = document.createElement('INPUT');
+    //sliLayer.setAttribute("type", "range");
+    //sliLayer.min=0;
+    //sliLayer.max=100;
+   // sliLayer.value=0;
+   // sliLayer.setAttribute('class', 'slider');
+   //sliLayer.setAttribute('id', 'slider_'+layerName);
+
     var layer_name = obj.layer.options.layers.toString();
+    var layerName = obj.layer.options.layers.toString().split(":")[1];
    // var server_path = obj.layer._url;
-    var imgPath=  "http://82.116.78.168/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+layer_name+"&legend_options=fontName:Times%20New%20Roman;fontAntiAliasing:true;fontColor:0x000033;fontSize:10;bgColor:0xFFFFEE;dpi:90"
-    name.innerHTML = ' ' + obj.name+"<br/>"+ "<img src='"+imgPath+"'   alt='NA'/><hr style='padding:0px;margin:0px'/>";
- }
+   var imgPath=  "http://82.116.78.168/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+layer_name+"&legend_options=fontName:Times%20New%20Roman;fontAntiAliasing:true;fontColor:0x000033;fontSize:10;bgColor:0xFFFFEE;dpi:90"
+   name.innerHTML = ' ' + obj.name+"<br/>"+ "<input type='range' name="+layer_name+" id=slider_"+layerName+" min='0' max='100' value='0' class='slider'> <img src='"+imgPath+"'   alt='NA' style='padding-top:5px;'/><hr style='padding-top:5px;margin:0px'/>";
+   
+
+}
   else
   {
      name.innerHTML = ' ' + obj.name;
@@ -358,11 +406,11 @@ else
 
   }
 
+  
 
 
 
-
-        label.appendChild(input);
+        label.appendChild(input);       
         label.appendChild(name);
 
         if (obj.layer.StyledLayerControl) {
@@ -480,7 +528,11 @@ else
     _collapse: function() {
         this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
     }
-});
+    
+}
+
+
+);
 
 L.Control.styledLayerControl = function(baseLayers, overlays, options) {
     return new L.Control.StyledLayerControl(baseLayers, overlays, options);

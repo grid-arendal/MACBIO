@@ -1,4 +1,3 @@
-
 var layer_GetAttList = {
   "basins": {
     Type: "Type",
@@ -214,11 +213,11 @@ var layer_GetAttList = {
     TYPES_OF_F: "Type",
     DEPTH: "Depth"
   },
-  "populated_places": {
-    NAME: "Name",
-    SOV0NAME: "Country",
-    POP_MAX: "Population"
-  }
+  // "populated_places": {
+  //   NAME: "Name",
+  //   SOV0NAME: "Country",
+  //   POP_MAX: "Population"
+  // }
 
 
 }
@@ -233,8 +232,8 @@ var LayerName_keys = Object.keys(layer_GetAttList);
 
 //Function to load layer list in a combobox
 //Function to create a key value pair for legend  dictionary
-var legDic;
 
+var legDic=null;
 public: function legendDicnary() {
   
   legDic = [];
@@ -269,7 +268,7 @@ public: function legendDicnary() {
   x1.add(option1);
   //$('#lgList').val('--Select a Layer--');
 
-
+ return legDic;
 }
 
 
@@ -284,14 +283,19 @@ map.on('overlayadd', function (e) {
   infoLayer.clearLayers();
   $('#lgList').val(e.name);
   layerJsonFromGeoserver();
-
-
+  //e.layer.bringToFront();
+  val = '#slider_' + e.layer.options.layers.split(":")[1];
+  $(val).css("visibility", "visible");
+   //$(val).show();
 });
+
 map.on('overlayremove ', function (e) {
   
   legendDicnary();
   infoLayer.clearLayers();
-
+  val = '#slider_' + e.layer.options.layers.split(":")[1];
+  $(val).css("visibility", "hidden");
+  //$(val).hide();
  
 });
 
@@ -308,10 +312,10 @@ $("#lgList").on('change', function () {
   selected = $('#lgList option:selected').val();
 
   //set the handcursor property on on selection chnage
-   if (selected != "--Select a Layer--") {
+   if ((selected != "--Select a Layer--") & (legDic.length > 0) & ((typeof(selected)).toString() != "undefined" )) {
+    
     valCon = legDic.filter(val => val.key == selected)[0].value
   
-   
      infoLayer.clearLayers();
  
 
