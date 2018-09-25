@@ -1,7 +1,8 @@
 
-
+var layList = "proclamation_1887_boundary,density,coldwater,basins,salinity,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,reefs,mangroves,pelagic,benthic,ebsaregions_20150521,kbas_new,sumain_1,sumaoff_1,deepwater_1,reefbio,tonga_decade_of_tuna,hotels,fad_tonga,divesites_tonga,passengervessel,airport,anchorages,marinas_and_wharfs,live_aboard_and_whale_watching,cables_360,deepseaminingtenements2015,ports,imo_1,cyclones,deepwatercatch,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph,tongavessel";
 $(window).resize(function() {
   sizeLayerControl();
+  setLayerTransparency();
 });
 
 
@@ -857,7 +858,7 @@ var attributionControl = L.control({
 attributionControl.onAdd = function (map) {
   var div = L.DomUtil.create("div", "leaflet-control-attribution");
   // div.innerHTML = "<span class='hidden-xs'>Developed by <a href='www.grida.no'>grida.no</a> | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
-  div.innerHTML = "<span class='hidden-xs'><a href='http://macbio-pacific.info/' target='blank'>MACBIO</a>   | </span><span class='hidden-xs'><a href='http://www.grida.no/' target='blank'>GRID-Arendal</a>   | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
+  div.innerHTML = "<span class='hidden-xs'><a href='http://macbio-pacific.info/' target='blank'>MACBIO</a>   | </span><span class='hidden-xs'><a href='http://www.grida.no/' target='blank'>GRID-Arendal</a>";
   return div;
 };
 
@@ -911,8 +912,8 @@ if (document.body.clientWidth <= 767) {
                 expanded : false,
                 layers    : {       
                   "1887 Proclamation boundary" : proclamation_1887_boundary,
-                  "Populated Places" : populated_places,
-                  "Hillshade" : hill
+                 // "Populated Places" : populated_places,
+                 // "Hillshade" : hill
                 } 
                              },
                 {
@@ -938,7 +939,7 @@ if (document.body.clientWidth <= 767) {
                   "Inactive Volcanoes" : volcanoes,
                   "Earthquakes Centers 2000-2016<br>(magnitude)" : earthquakes,
                   "Hydrothermal" : hydrothermal,
-                  "Currents" : currents,
+                 // "Currents" : currents,
                   "Salinity" : salinity,
                   "Chlorophyll-a Concentration" : chl,
                   "Photosynthetically Available Radiation" : parf,
@@ -993,7 +994,11 @@ if (document.body.clientWidth <= 767) {
 
       ];
 
-
+      function load_about() {
+        $("#aboutModal").modal("show");
+        $('.nav-tabs li:eq(0) a').tab('show');
+        return false;
+      }
 
 
 /* Add legend */
@@ -1066,14 +1071,20 @@ $("#loading").hide();
 /* Load the content before map load */
 $(document).one("ajaxStop", function () {
   $("#loading").hide();
+  load_about();
   legendDicnary();
   sizeLayerControl();
   /* Fit map to vanlong bounds */
   map.fitBounds(extent_layer.getBounds());
+  setZindexMap();
  // map.zoomIn(0.4);
 
 });
-
+$(window).load(function(){
+  //
+  setLayerTransparency();
+  
+ });
 // Leaflet patch to make layer control scrollable on touch browsers
 var container = $(".leaflet-control-layers")[0];
 if (!L.Browser.touch) {
@@ -1083,3 +1094,25 @@ if (!L.Browser.touch) {
 } else {
   L.DomEvent.disableClickPropagation(container);
 }
+function setLayerTransparency() {
+  layList_obj = layList.split(",");
+  layList_obj.forEach(function (val) {
+    val = '#slider_' + val;
+   $(val).on('change',function(ev){
+    var valName = ev.target.name;
+    var valSlider = parseFloat(ev.target.value);
+     map.eachLayer(function(layer) {
+     
+     if(layer.options.layers == valName)
+       {
+         
+         layer.setOpacity(1-(valSlider * 0.01));
+        
+       }     
+ });
+       
+   });
+    });
+   gif_loadLay.remove() 
+}
+function setZindexMap() {}

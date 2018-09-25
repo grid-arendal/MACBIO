@@ -286,7 +286,7 @@ $("#lgList").on('change', function () {
 
   //create a empty geojson file and add alayer to it
   
-  if ((selected != "--Select a Layer--") & (legDic.length > 0) & ((typeof(selected)).toString() != "undefined" )) {
+  if (rasterList.indexOf(selected) < 0   && selected != "--Select a Layer--") { {
 
 
   var map_obj = $.getJSON("http://82.116.78.168/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=" + valCon.options.layers + "&outputFormat=application%2Fjson", function (data) {

@@ -1,7 +1,8 @@
 
-
+var layList = "si_eez,seaweed,coldwater,density,basins,salinity,si_province_boundary,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,reef,mangrove,pelagic,benthic,ebsaregions_20150521,kba,si_suma_v7inshore,si_suma_v7offshore,sideepbio,sireefbioregions,solomonisland_decade_of_tuna,si_tourism_final,dive_sites_2,passengervessel,airport,jeties_marinas_wharfs_port_of_call_and_common_yacht_anchorages,liveaboard_taka,cables_360,si_tenements,ports,imo,cyclones,solomonisland_decade_of_deep,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph,solomonvessels";
 $(window).resize(function() {
   sizeLayerControl();
+  setLayerTransparency();
 });
 
 
@@ -906,7 +907,7 @@ var attributionControl = L.control({
 attributionControl.onAdd = function (map) {
   var div = L.DomUtil.create("div", "leaflet-control-attribution");
   // div.innerHTML = "<span class='hidden-xs'>Developed by <a href='www.grida.no'>grida.no</a> | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
-  div.innerHTML = "<span class='hidden-xs'><a href='http://macbio-pacific.info/' target='blank'>MACBIO</a>   | </span><span class='hidden-xs'><a href='http://www.grida.no/' target='blank'>GRID-Arendal</a>   | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
+  div.innerHTML = "<span class='hidden-xs'><a href='http://macbio-pacific.info/' target='blank'>MACBIO</a>   | </span><span class='hidden-xs'><a href='http://www.grida.no/' target='blank'>GRID-Arendal</a>";
   return div;
 };
 
@@ -961,8 +962,8 @@ if (document.body.clientWidth <= 767) {
                 layers    : {     
                   "Exclusive Economic Zone" : si_eez,  
                   "Divisional Lines" : si_province_boundary,
-                  "Populated Places" : populated_places,
-                  "Hillshade" : hill
+                 // "Populated Places" : populated_places,
+                  //"Hillshade" : hill
                 } 
                              },
                 {
@@ -988,7 +989,7 @@ if (document.body.clientWidth <= 767) {
                   "Inactive Volcanoes" : volcanoes,
                   "Earthquakes Centers 2000-2016<br>(magnitude)" : earthquakes,
                   "Hydrothermal" : hydrothermal,
-                  "Currents" : currents,
+                //  "Currents" : currents,
                   "Salinity" : salinity,
                   "Chlorophyll-a Concentration" : chl,
                   "Photosynthetically Available Radiation" : parf,
@@ -1041,7 +1042,12 @@ if (document.body.clientWidth <= 767) {
                              }       
 
       ];
-
+// open the about page onload
+function load_about() {
+  $("#aboutModal").modal("show");
+  $('.nav-tabs li:eq(0) a').tab('show');
+  return false;
+}
 
 
 
@@ -1068,14 +1074,20 @@ map.addControl(control);
 /* Load the content before map load */
 $(document).one("ajaxStop", function () {
   $("#loading").hide();
+  load_about();
   legendDicnary();
   sizeLayerControl();
   /* Fit map to vanlong bounds */
   map.fitBounds(extent_layer.getBounds());
  // map.zoomIn(0.4);
-
+  setZindexMap();
 });
 
+$(window).load(function(){
+  //
+  setLayerTransparency();
+  
+ })
 // Leaflet patch to make layer control scrollable on touch browsers
 var container = $(".leaflet-control-layers")[0];
 if (!L.Browser.touch) {
@@ -1085,3 +1097,27 @@ if (!L.Browser.touch) {
 } else {
   L.DomEvent.disableClickPropagation(container);
 }
+
+function setLayerTransparency() {
+  layList_obj = layList.split(",");
+  layList_obj.forEach(function (val) {
+    val = '#slider_' + val;
+   $(val).on('change',function(ev){
+    var valName = ev.target.name;
+    var valSlider = parseFloat(ev.target.value);
+     map.eachLayer(function(layer) {
+     
+     if(layer.options.layers == valName)
+       {
+         
+         layer.setOpacity(1-(valSlider * 0.01));
+        
+       }     
+ });
+       
+   });
+    });
+   gif_loadLay.remove() 
+}
+
+function setZindexMap() {}

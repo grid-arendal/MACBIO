@@ -1,7 +1,8 @@
 
-
+var layList = "vanuatu_eez_wgs84,density,vanuatuvessels,combined_anchorages,mathunter_is,coldwater,archipelagicbaseline_1,basins,salinity,province_lines,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,vanuatureef,vanuatumangrove,pelagic,benthic,ebsaregions_20150521,ibamap_12feb2016_selected_1,vut_suma_v3inshore,vut_suma_v3offshore,vudeepwater,vureefbio,vanuatu_decade_of_tuna,vanuatuaquaculture,accommodation,dive_sites_1,passengervessel,airport,wharvesandjetties,areas,cruise_ship_ports,cables_360,dsm_tenement,ports,imomarpol_1,cyclones,decadeofdeepcatch,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph";
 $(window).resize(function() {
   sizeLayerControl();
+  setLayerTransparency();
 });
 
 
@@ -915,7 +916,7 @@ var attributionControl = L.control({
 attributionControl.onAdd = function (map) {
   var div = L.DomUtil.create("div", "leaflet-control-attribution");
   // div.innerHTML = "<span class='hidden-xs'>Developed by <a href='www.grida.no'>grida.no</a> | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
-  div.innerHTML = "<span class='hidden-xs'><a href='http://macbio-pacific.info/' target='blank'>MACBIO</a>   | </span><span class='hidden-xs'><a href='http://www.grida.no/' target='blank'>GRID-Arendal</a>   | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
+  div.innerHTML = "<span class='hidden-xs'><a href='http://macbio-pacific.info/' target='blank'>MACBIO</a>   | </span><span class='hidden-xs'><a href='http://www.grida.no/' target='blank'>GRID-Arendal</a> ";
   return div;
 };
 
@@ -972,8 +973,8 @@ if (document.body.clientWidth <= 767) {
                   "Exclusive Economic Zone" : vanuatu_eez_wgs84,  
                   "Archipelagic Baseline" : archipelagicbaseline_1,
                   "Divisional Lines" : province_lines,
-                  "Populated Places" : populated_places,
-                  "Hillshade" : hill
+                //  "Populated Places" : populated_places,
+                 // "Hillshade" : hill
                 } 
                              },
                 {
@@ -999,7 +1000,7 @@ if (document.body.clientWidth <= 767) {
                   "Inactive Volcanoes" : volcanoes,
                   "Earthquakes Centers 2000-2016<br>(magnitude)" : earthquakes,
                   "Hydrothermal" : hydrothermal,
-                  "Currents" : currents,
+                //  "Currents" : currents,
                   "Salinity" : salinity,
                   "Chlorophyll-a Concentration" : chl,
                   "Photosynthetically Available Radiation" : parf,
@@ -1055,7 +1056,12 @@ if (document.body.clientWidth <= 767) {
 
       ];
 
-
+// open the about page onload
+function load_about() {
+  $("#aboutModal").modal("show");
+  $('.nav-tabs li:eq(0) a').tab('show');
+  return false;
+}
 
 
 /* Add legend */
@@ -1128,13 +1134,19 @@ $("#loading").hide();
 /* Load the content before map load */
 $(document).one("ajaxStop", function () {
   $("#loading").hide();
+  load_about();
   legendDicnary();
   sizeLayerControl();
   /* Fit map to vanlong bounds */
   map.fitBounds(extent_layer.getBounds());
  // map.zoomIn(0.4);
-
+ setZindexMap();
 });
+
+$(window).load(function(){
+  //
+  setLayerTransparency();
+ });
 
 // Leaflet patch to make layer control scrollable on touch browsers
 var container = $(".leaflet-control-layers")[0];
@@ -1145,3 +1157,26 @@ if (!L.Browser.touch) {
 } else {
   L.DomEvent.disableClickPropagation(container);
 }
+
+function setLayerTransparency() {
+  layList_obj = layList.split(",");
+  layList_obj.forEach(function (val) {
+    val = '#slider_' + val;
+   $(val).on('change',function(ev){
+    var valName = ev.target.name;
+    var valSlider = parseFloat(ev.target.value);
+     map.eachLayer(function(layer) {
+     
+     if(layer.options.layers == valName)
+       {
+         
+         layer.setOpacity(1-(valSlider * 0.01));
+        
+       }     
+ });
+       
+   });
+    });
+   gif_loadLay.remove() 
+}
+function setZindexMap() {}

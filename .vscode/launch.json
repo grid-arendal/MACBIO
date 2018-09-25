@@ -9,7 +9,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://tuvalu.grida.no/webgis/macbio_app/Kiribati/index.html",
+            "url": "http://tuvalu.grida.no/webgis/macbio_app/vanuatu/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]

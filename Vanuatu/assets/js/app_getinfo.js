@@ -188,11 +188,11 @@ var layer_GetAttList = {
   "chl": {
     GRAY_INDEX: "Value",
   },
-  "populated_places": {
-    NAME: "Name",
-    SOV0NAME: "Country",
-    POP_MAX: "Population"
-  }
+  //"populated_places": {
+  //  NAME: "Name",
+  //  SOV0NAME: "Country",
+ //   POP_MAX: "Population"
+ // }
 
 
 }
@@ -207,7 +207,7 @@ var LayerName_keys = Object.keys(layer_GetAttList);
 
 //Function to load layer list in a combobox
 //Function to create a key value pair for legend  dictionary
-var legDic;
+var legDic=null;
 
 public: function legendDicnary() {
   
@@ -258,14 +258,17 @@ map.on('overlayadd', function (e) {
   infoLayer.clearLayers();
   $('#lgList').val(e.name);
   layerJsonFromGeoserver();
-
+  val = '#slider_' + e.layer.options.layers.split(":")[1];
+  $(val).css("visibility", "visible");
+ ($('#lgList').prop('selectedIndex') > -1? true :$('#lgList').val("--Select a Layer--"))
 
 });
 map.on('overlayremove ', function (e) {
   
   legendDicnary();
   infoLayer.clearLayers();
-
+  val = '#slider_' + e.layer.options.layers.split(":")[1];
+  $(val).css("visibility", "hidden");
  
 });
 
@@ -282,7 +285,7 @@ $("#lgList").on('change', function () {
   selected = $('#lgList option:selected').val();
 
   //set the handcursor property on on selection chnage
-   if (selected != "--Select a Layer--") {
+  if ((selected != "--Select a Layer--") & (legDic.length > 0) & ((typeof(selected)).toString() != "undefined" )) {
     valCon = legDic.filter(val => val.key == selected)[0].value
   
    
@@ -334,7 +337,7 @@ $("#lgList").on('change', function () {
           infoLayer.addLayer(L.polyline(polygon_line.getLatLngs(), {fillOpacity:0,opacity:0}));
           break;
 
-
+          
           default:
             break;
         }
