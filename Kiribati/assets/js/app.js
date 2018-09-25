@@ -1,7 +1,8 @@
 
-
+var layList = "krbeez,density,coldwater,basins,salinity,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,reefs_1,pelagic,benthic,ebsaregions_20150521,kba_1,deepwater_2,reefbio_1,tunacatch,aquaculture,anchorages_1,passengervessel,airport,wharves,cruiseships,cables_360,ports,imo_2,cyclones,kiribati_deep_fisheries_360,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph,kirvessel";
 $(window).resize(function() {
   sizeLayerControl();
+  setLayerTransparency();
 });
 
 
@@ -902,8 +903,8 @@ if (document.body.clientWidth <= 767) {
                 expanded : false,
                 layers    : {          
                   "Exclusive Economic Zone" : krbeez,  
-                  "Populated Places" : populated_places,
-                  "Hillshade" : hill
+                  //"Populated Places" : populated_places,
+                  //"Hillshade" : hill
                 } 
                              },
                 {
@@ -929,7 +930,7 @@ if (document.body.clientWidth <= 767) {
                   "Inactive Volcanoes" : volcanoes,
                   "Earthquakes Centers 2000-2016<br>(magnitude)" : earthquakes,
                   "Hydrothermal" : hydrothermal,
-                  "Currents" : currents,
+                  //"Currents" : currents,
                   "Salinity" : salinity,
                   "Chlorophyll-a Concentration" : chl,
                   "Photosynthetically Available Radiation" : parf,
@@ -996,20 +997,33 @@ map.addControl(control);
 
 
 
-
+// open the about page onload
+function load_about() {
+  $("#aboutModal").modal("show");
+  $('.nav-tabs li:eq(0) a').tab('show');
+  return false;
+}
 
 
 
 /* Load the content before map load */
 $(document).one("ajaxStop", function () {
   $("#loading").hide();
+  load_about();
   legendDicnary();
   sizeLayerControl();
   /* Fit map to vanlong bounds */
   map.fitBounds(extent_layer.getBounds());
+  setZindexMap();
  // map.zoomIn(0.4);
 
 });
+
+$(window).load(function(){
+  //
+  setLayerTransparency();
+  
+ });
 
 // Leaflet patch to make layer control scrollable on touch browsers
 var container = $(".leaflet-control-layers")[0];
@@ -1019,4 +1033,84 @@ if (!L.Browser.touch) {
   .disableScrollPropagation(container);
 } else {
   L.DomEvent.disableClickPropagation(container);
+}
+
+function setLayerTransparency() {
+  layList_obj = layList.split(",");
+  layList_obj.forEach(function (val) {
+    val = '#slider_' + val;
+   $(val).on('change',function(ev){
+    var valName = ev.target.name;
+    var valSlider = parseFloat(ev.target.value);
+     map.eachLayer(function(layer) {
+     
+     if(layer.options.layers == valName)
+       {
+         
+         layer.setOpacity(1-(valSlider * 0.01));
+        
+       }     
+ });
+       
+   });
+    });
+   gif_loadLay.remove() 
+}
+
+function setZindexMap() {
+  OpenStreetMap_BlackAndWhite.setZIndex(1);
+  Esri_WorldImagery.setZIndex(2);
+  krbeez.setZIndex(26);
+  oceandepth.setZIndex(16);
+  basins.setZIndex(27);
+  canyons.setZIndex(28);
+  escarpments.setZIndex(29);
+  guyots.setZIndex(30);
+  seamounts.setZIndex(31);
+  rift_valleys.setZIndex(32);
+  troughs.setZIndex(33);
+  ridges.setZIndex(34);
+  spreading_ridges.setZIndex(35);
+  trenches.setZIndex(36);
+  plateaus.setZIndex(37);
+  shelf.setZIndex(38);
+  slope.setZIndex(39);
+  abyssal.setZIndex(17);
+  seamount.setZIndex(18);
+  volcanoes.setZIndex(40);
+  earthquakes.setZIndex(48);
+  hydrothermal.setZIndex(49);
+  currents.setZIndex(50);
+  salinity.setZIndex(3);
+  chl.setZIndex(4);
+  parf.setZIndex(5);
+  reefs_1.setZIndex(41);
+  pelagic.setZIndex(19);
+  benthic.setZIndex(20);
+  coldwater.setZIndex(21);
+  kba_1.setZIndex(42);
+  ebsaregions_20150521.setZIndex(43);
+  deepwater_2.setZIndex(44);
+  reefbio_1.setZIndex(22);
+  tunacatch.setZIndex(23);
+  kiribati_deep_fisheries_360.setZIndex(24);
+  aquaculture.setZIndex(51);
+  density.setZIndex(7);
+  anchorages_1.setZIndex(52);
+  passengervessel.setZIndex(45);
+  airport.setZIndex(53);
+  wharves.setZIndex(54);
+  cruiseships.setZIndex(55);
+  cables_360.setZIndex(56);
+  ports.setZIndex(57);
+  kirvessel.setZIndex(46);
+  phosphate.setZIndex(8);
+  nitrate.setZIndex(9);
+  sst.setZIndex(10);
+  ph.setZIndex(11);
+  calcite.setZIndex(12);
+  cyclones.setZIndex(47);
+  imo_2.setZIndex(25);
+  
+
 }

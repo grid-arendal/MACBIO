@@ -286,6 +286,7 @@ map.on('overlayadd', function (e) {
   //e.layer.bringToFront();
   val = '#slider_' + e.layer.options.layers.split(":")[1];
   $(val).css("visibility", "visible");
+  ($('#lgList').prop('selectedIndex') > -1? true :$('#lgList').val("--Select a Layer--"))
    //$(val).show();
 });
 
