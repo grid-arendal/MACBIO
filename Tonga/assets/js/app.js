@@ -133,6 +133,17 @@ $.getJSON("data/extent_layer.geojson", function (data) {
 var baseURL = "http://82.116.78.168/geoserver/geonode/ows";
 
 
+var grid_1km = L.tileLayer.wms(baseURL, {
+  layers: 'geonode:grid_1km',
+  format: 'image/png',
+  transparent: true,
+  version: '1.0.0',
+  attribution: "geonode.grida.no",
+  title: true,
+  //crs:L.CRS.EPSG4326,
+  opacity: '0.7',
+
+});
 
 var proclamation_1887_boundary =  L.tileLayer.wms(baseURL, {
   layers: 'geonode:proclamation_1887_boundary',
@@ -1115,4 +1126,64 @@ function setLayerTransparency() {
     });
    gif_loadLay.remove() 
 }
-function setZindexMap() {}
+function setZindexMap() {
+OpenStreetMap_BlackAndWhite.setZIndex(1);
+Esri_WorldImagery.setZIndex(2);
+proclamation_1887_boundary.setZIndex(41);
+oceandepth.setZIndex(12);
+basins.setZIndex(22);
+canyons.setZIndex(23);
+escarpments.setZIndex(24);
+guyots.setZIndex(25);
+seamounts.setZIndex(26);
+rift_valleys.setZIndex(27);
+troughs.setZIndex(28);
+ridges.setZIndex(29);
+spreading_ridges.setZIndex(30);
+trenches.setZIndex(31);
+plateaus.setZIndex(32);
+shelf.setZIndex(33);
+slope.setZIndex(34);
+abyssal.setZIndex(13);
+seamount.setZIndex(14);
+volcanoes.setZIndex(35);
+earthquakes.setZIndex(42);
+hydrothermal.setZIndex(43);
+currents.setZIndex(44);
+salinity.setZIndex(3);
+chl.setZIndex(4);
+parf.setZIndex(5);
+reefs.setZIndex(45);
+mangroves.setZIndex(46);
+pelagic.setZIndex(15);
+benthic.setZIndex(16);
+coldwater.setZIndex(17);
+kbas_new.setZIndex();
+ebsaregions_20150521.setZIndex();
+sumaoff_1.setZIndex();
+sumain_1.setZIndex();
+deepwater_1.setZIndex();
+reefbio.setZIndex(18);
+tonga_decade_of_tuna.setZIndex(19);
+deepwatercatch.setZIndex(20);
+fad_tonga.setZIndex(47);
+density.setZIndex(6);
+hotels.setZIndex(48);
+divesites_tonga.setZIndex(49);
+passengervessel.setZIndex(40);
+airport.setZIndex(50);
+anchorages.setZIndex(51);
+marinas_and_wharfs.setZIndex(52);
+live_aboard_and_whale_watching.setZIndex(37);
+deepseaminingtenements2015.setZIndex(36);
+cables_360.setZIndex(39);
+ports.setZIndex(53);
+tongavessel.setZIndex(38);
+phosphate.setZIndex(7);
+nitrate.setZIndex(8);
+sst.setZIndex(9);
+ph.setZIndex(10);
+calcite.setZIndex(11);
+cyclones.setZIndex(37);
+imo_1.setZIndex(21);
+}

@@ -363,6 +363,8 @@ loadLay.setAttribute('id', 'gif_loadLay');
          //required layer list
  var layList = "si_eez,seaweed,coldwater,density,basins,salinity,si_province_boundary,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,reef,mangrove,pelagic,benthic,ebsaregions_20150521,kba,si_suma_v7inshore,si_suma_v7offshore,sideepbio,sireefbioregions,solomonisland_decade_of_tuna,si_tourism_final,dive_sites_2,passengervessel,airport,jeties_marinas_wharfs_port_of_call_and_common_yacht_anchorages,liveaboard_taka,cables_360,si_tenements,ports,imo,cyclones,solomonisland_decade_of_deep,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph,solomonvessels";
  var excludeList="OpenStreetMap,WorldImagery ESRI" ;
+ 
+
  excludeList = excludeList.split(",");
  layList = layList.split(",");
 
@@ -395,7 +397,6 @@ else
 
         label.appendChild(input);
         label.appendChild(name);
-
         if (obj.layer.StyledLayerControl) {
 
             // configure the delete button for layers with attribute removable = true

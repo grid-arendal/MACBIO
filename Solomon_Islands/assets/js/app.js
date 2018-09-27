@@ -1,4 +1,3 @@
-
 var layList = "si_eez,seaweed,coldwater,density,basins,salinity,si_province_boundary,seamount,canyons,abyssal,escarpments,guyots,seamounts,rift_valleys,troughs,ridges,spreading_ridges,trenches,plateaus,shelf,slope,volcanoes,earthquakes,hydrothermal,reef,mangrove,pelagic,benthic,ebsaregions_20150521,kba,si_suma_v7inshore,si_suma_v7offshore,sideepbio,sireefbioregions,solomonisland_decade_of_tuna,si_tourism_final,dive_sites_2,passengervessel,airport,jeties_marinas_wharfs_port_of_call_and_common_yacht_anchorages,liveaboard_taka,cables_360,si_tenements,ports,imo,cyclones,solomonisland_decade_of_deep,sst,chl,parf,oceandepth,phosphate,nitrate,calcite,ph,solomonvessels";
 $(window).resize(function() {
   sizeLayerControl();
@@ -1120,4 +1119,64 @@ function setLayerTransparency() {
    gif_loadLay.remove() 
 }
 
-function setZindexMap() {}
+function setZindexMap() {
+  OpenStreetMap_BlackAndWhite.setZIndex(1);
+Esri_WorldImagery.setZIndex(2);
+ si_eez .setZIndex(42);
+ si_province_boundary.setZIndex(43);
+ oceandepth.setZIndex(12);
+ basins.setZIndex(22);
+ canyons.setZIndex(23);
+ escarpments.setZIndex(24);
+ guyots.setZIndex(25);
+ seamounts.setZIndex(26);
+ rift_valleys.setZIndex(27);
+ troughs.setZIndex(28);
+ ridges.setZIndex(29);
+ spreading_ridges.setZIndex(30);
+ trenches.setZIndex(31);
+ plateaus.setZIndex(32);
+ shelf.setZIndex(33);
+ slope.setZIndex(34);
+ abyssal.setZIndex(13);
+ seamount.setZIndex(14);
+ volcanoes.setZIndex(35);
+ earthquakes.setZIndex();
+ hydrothermal.setZIndex();
+ salinity.setZIndex(3);
+ chl.setZIndex(4);
+ parf.setZIndex(5);
+ reef.setZIndex(36);
+ mangrove.setZIndex(37);
+ pelagic.setZIndex(15);
+ benthic.setZIndex(16);
+ coldwater.setZIndex(17);
+ kba.setZIndex(47);
+ ebsaregions_20150521.setZIndex(48);
+ si_suma_v7offshore.setZIndex(49);
+ si_suma_v7inshore.setZIndex(50);
+ sideepbio.setZIndex(51);
+ sireefbioregions.setZIndex(18);
+ solomonisland_decade_of_tuna.setZIndex(19);
+ solomonisland_decade_of_deep.setZIndex(20);
+ seaweed.setZIndex(58);
+ density.setZIndex(6);
+ si_tourism_final.setZIndex(52);
+ dive_sites_2.setZIndex(53);
+ passengervessel.setZIndex(45);
+ airport.setZIndex(54);
+ jeties_marinas_wharfs_port_of_call_and_common_yacht_anchorages.setZIndex(55);
+ liveaboard_taka.setZIndex(38);
+ si_tenements.setZIndex(39);
+ cables_360.setZIndex(40);
+ ports.setZIndex(56);
+ solomonvessels.setZIndex(57);
+ phosphate.setZIndex(7);
+ nitrate.setZIndex(8);
+ sst.setZIndex(9);
+ ph.setZIndex(10);
+ calcite.setZIndex(11);
+ cyclones.setZIndex(41);
+ imo.setZIndex(21);
+
+}

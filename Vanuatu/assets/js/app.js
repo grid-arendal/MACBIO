@@ -6,6 +6,7 @@ $(window).resize(function() {
 });
 
 
+
 $("#about-btn").click(function() {
   $("#aboutModal").modal("show");
   $('.nav-tabs li:eq(0) a').tab('show');
@@ -1001,20 +1002,7 @@ if (document.body.clientWidth <= 767) {
                   "Earthquakes Centers 2000-2016<br>(magnitude)" : earthquakes,
                   "Hydrothermal" : hydrothermal,
                 //  "Currents" : currents,
-                  "Salinity" : salinity,
-                  "Chlorophyll-a Concentration" : chl,
-                  "Photosynthetically Available Radiation" : parf,
-                  "Reefs" : vanuatureef,
-                  "Mangroves" : vanuatumangrove,
-                  "Pelagic Marine Species Richness <br> (number of species)" : pelagic,
-                  "Benthic Marine Species Richness <br> (number of species)" : benthic,
-                  "Coldwater Habitat Suitability" : coldwater,
-                  "Key Bird and Biodiversity Areas" : ibamap_12feb2016_selected_1,
-                  "Ecologically and Biologically Significant Areas" : ebsaregions_20150521,
-                  "Special and/or Unique Marine Areas(SUMA) Offshore" : vut_suma_v3offshore,
-                  "Special and/or Unique Marine Areas(SUMA) Inshore" : vut_suma_v3inshore,
-                  "Deepwater Bioregions" : vudeepwater,
-                  "Reef Associated Bioregions" : vureefbio
+                  
                   
                                   }
                               },   
@@ -1179,4 +1167,54 @@ function setLayerTransparency() {
     });
    gif_loadLay.remove() 
 }
-function setZindexMap() {}
+function setZindexMap() {
+  OpenStreetMap_BlackAndWhite.setZIndex(1);
+  Esri_WorldImagery.setZIndex(2);
+  density.setZIndex(3);
+  phosphate.setZIndex(4);
+  nitrate.setZIndex(5);
+  sst.setZIndex(6);
+  ph.setZIndex(7);
+  calcite.setZIndex(8);
+  oceandepth.setZIndex(9);
+  abyssal.setZIndex(10);
+  dive_sites_1.setZIndex(11);
+  seamount.setZIndex(12);
+  vanuatu_decade_of_tuna.setZIndex(13);
+  decadeofdeepcatch.setZIndex(14);
+  imomarpol_1.setZIndex(15);
+  canyons.setZIndex(16);
+  escarpments.setZIndex(17);
+  guyots.setZIndex(18);
+  seamounts.setZIndex(19);
+  rift_valleys.setZIndex(20);
+  troughs.setZIndex(21);
+  ridges.setZIndex(22);
+  spreading_ridges.setZIndex(23);
+  trenches.setZIndex(24);
+  plateaus.setZIndex(25);
+  shelf.setZIndex(26);
+  slope.setZIndex(27);
+  dsm_tenement.setZIndex(28);
+  mathunter_is.setZIndex(29);
+  vanuatu_eez_wgs84.setZIndex(30);
+  archipelagicbaseline_1.setZIndex(31);
+  cyclones.setZIndex(32);
+  passengervessel.setZIndex(33);
+  vanuatuvessels.setZIndex(34);
+  cables_360.setZIndex(35);
+  province_lines.setZIndex(36);
+  basins.setZIndex(37);
+  volcanoes.setZIndex(38);
+  earthquakes.setZIndex(39);
+  hydrothermal.setZIndex(40);
+  vanuatuaquaculture.setZIndex(41);
+  accommodation.setZIndex(42);
+  combined_anchorages.setZIndex(43);
+  airport.setZIndex(44);
+  wharvesandjetties.setZIndex(45);
+  areas.setZIndex(46);
+  cruise_ship_ports.setZIndex(47);
+  ports.setZIndex(48);
+   
+}

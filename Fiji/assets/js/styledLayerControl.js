@@ -390,7 +390,7 @@ if(excludeList.indexOf(obj.name) < 0)
     var layerName = obj.layer.options.layers.toString().split(":")[1];
    // var server_path = obj.layer._url;
    var imgPath=  "http://82.116.78.168/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+layer_name+"&legend_options=fontName:Times%20New%20Roman;fontAntiAliasing:true;fontColor:0x000033;fontSize:10;bgColor:0xFFFFEE;dpi:90"
-   name.innerHTML = ' ' + obj.name+"<br/>"+ "<input type='range' name="+layer_name+" id=slider_"+layerName+" min='0' max='100' value='0' class='slider'> <img src='"+imgPath+"'   alt='NA' style='padding-top:5px;'/><hr style='padding-top:5px;margin:0px'/>";
+   name.innerHTML = ' ' + obj.name+"<br/>"+ "<input type='range' name="+ layer_name +" id=slider_"+layerName+" min='0' max='100' value='0' class='slider'> <img src='"+imgPath+"'   alt='NA' style='padding-top:5px;'/><hr style='padding-top:5px;margin:0px'/>";
    
 
 }
