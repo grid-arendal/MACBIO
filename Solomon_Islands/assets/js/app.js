@@ -1180,4 +1180,7 @@ Esri_WorldImagery.setZIndex(2);
  cyclones.setZIndex(41);
  imo.setZIndex(21);
 
+   //Set the defult layer
+   map.addLayer(si_eez);
+
 }

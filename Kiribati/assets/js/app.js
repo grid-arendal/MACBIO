@@ -1055,7 +1055,7 @@ function setLayerTransparency() {
        
    });
     });
-   gif_loadLay.remove() 
+   gif_loadLay.remove(); 
 }
 
 function setZindexMap() {
@@ -1112,6 +1112,10 @@ function setZindexMap() {
   calcite.setZIndex(12);
   cyclones.setZIndex(47);
   imo_2.setZIndex(25);
+
+  //Set the defult layer
+ map.addLayer(krbeez);
+ 
   
 
 }

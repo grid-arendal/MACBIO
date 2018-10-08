@@ -1383,5 +1383,9 @@ function setZindexMap() {
   calcite.setZIndex(12);
   cyclones.setZIndex(47);
   imomarpol.setZIndex(53);
+
+  //set the default layer
+  map.addLayer(fiji_provisional_exclusive_economic_zone_boundary);
+  map.addLayer(archipelagicbaseline);
 }
 

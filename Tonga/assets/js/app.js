@@ -1187,4 +1187,9 @@ ph.setZIndex(10);
 calcite.setZIndex(11);
 cyclones.setZIndex(37);
 imo_1.setZIndex(21);
+
+  //Set the defult layer
+  map.addLayer(proclamation_1887_boundary);
+
+
 }

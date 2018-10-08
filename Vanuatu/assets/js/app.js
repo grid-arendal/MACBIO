@@ -1166,7 +1166,7 @@ function setLayerTransparency() {
        
    });
     });
-   gif_loadLay.remove() 
+   gif_loadLay.remove(); 
 }
 function setZindexMap() {
   OpenStreetMap_BlackAndWhite.setZIndex(1);
@@ -1217,5 +1217,10 @@ function setZindexMap() {
   areas.setZIndex(46);
   cruise_ship_ports.setZIndex(47);
   ports.setZIndex(48);
+
+  //Set the defult layer
+  map.addLayer(vanuatu_eez_wgs84);
+  map.addLayer(archipelagicbaseline_1);
+
    
 }

@@ -1,4 +1,3 @@
-
 var layer_GetAttList = {
   "basins": {
     Type: "Type",
@@ -555,3 +554,5 @@ public: function crack_antimaredian(arrayObj, geoType) {
   return geoArray;
 
 } 
+
+}
